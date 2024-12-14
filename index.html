@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Opening Card</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #000;
+        }
+
+        #glitter-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .book {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            perspective: 1000px;
+        }
+
+        .book-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 1s;
+        }
+
+        .book.open .book-inner {
+            transform: rotateY(-180deg);
+        }
+
+        .book-page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border: 2px solid #ff6347;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            font-size: 1.5em;
+            color: black;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            transform-origin: left;
+            backface-visibility: hidden; /* Ensures text does not appear mirrored */
+        }
+
+        .book-page.front {
+            transform: rotateY(0deg);
+            z-index: 2;
+            flex-direction: column;
+        }
+
+        .book-page.middle {
+            transform: rotateY(180deg);
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .book-page.back {
+            transform: rotateY(360deg);
+            z-index: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hidden {
+            visibility: hidden; /* Hides the hidden message */
+        }
+
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .button {
+            padding: 12px 25px;
+            background: #ff6347;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .button:hover {
+            background: #ff4500;
+        }
+
+        #music {
+            display: none;
+        }
+
+        /* Image Styling */
+        .book-page img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <video id="glitter-video" autoplay muted loop>
+        <source src="Gold glitter background HD (1).mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="book" id="book">
+        <div class="book-inner">
+            <div class="book-page front">
+                <img src="image.jpeg" alt="Rohit"> <!-- Add the image here -->
+                <h1>Rohit</h1>
+            </div>
+            <div class="book-page middle hidden" id="middle-page">
+                <p>❤️ You are the heartbeat of my life. ❤️</p>
+            </div>
+            <div class="book-page back hidden" id="back-page">
+                <p>Thanks!</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button id="open-btn" class="button">Open the Card</button>
+        <button id="reset-btn" class="button" style="display: none;">Back</button>
+    </div>
+
+    <audio id="music" loop>
+        <source src="music.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        const book = document.getElementById('book');
+        const openBtn = document.getElementById('open-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const music = document.getElementById('music');
+        const middlePage = document.getElementById('middle-page');
+        const backPage = document.getElementById('back-page');
+
+        openBtn.addEventListener('click', () => {
+            book.classList.add('open');
+            music.play();
+            openBtn.style.display = 'none';
+            resetBtn.style.display = 'block';
+            middlePage.classList.remove('hidden'); // Show the hidden message on opening
+            backPage.classList.remove('hidden'); // Show the hidden message on opening
+        });
+
+        resetBtn.addEventListener('click', () => {
+            book.classList.remove('open');
+            music.pause();
+            music.currentTime = 0;
+            openBtn.style.display = 'block';
+            resetBtn.style.display = 'none';
+            middlePage.classList.add('hidden'); // Hide the message again
+            backPage.classList.add('hidden'); // Hide the message again
+        });
+    </script>
+</body>
+</html>
